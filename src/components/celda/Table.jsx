@@ -1,65 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import TrCelda from "./TrCelda";
 
-export default function Table({ celdas }) {
-  const handleEliminar = (id) => {
-    // Aquí puedes agregar la lógica para eliminar una celda usando el servicio de eliminación.
-    console.log(`Eliminando celda con ID: ${id}`);
-  };
+const Table = ({ estado }) => {
+  const [celdas, setCeldas] = useState([]);
 
-  const handleEditar = (id) => {
-    // Aquí puedes agregar la lógica para editar una celda.
-    console.log(`Editando celda con ID: ${id}`);
+  useEffect(() => {
+    // Obtener las celdas desde el backend según el estado
+    const url = estado
+      ? "http://localhost:8080/celdas/disponibles" // Celdas disponibles
+      : "http://localhost:8080/celdas/ocupadas"; // Celdas ocupadas
+
+    axios
+      .get(url)
+      .then((response) => setCeldas(response.data))
+      .catch((error) => console.error("Error al obtener las celdas:", error));
+  }, [estado]);
+
+  const actualizarCelda = (id, dataActualizada) => {
+    // Actualiza una celda en el estado local
+    setCeldas((prevCeldas) =>
+      prevCeldas.map((celda) =>
+        celda.id === id ? { ...celda, ...dataActualizada } : celda
+      )
+    );
   };
 
   return (
-    <div className="table-responsive">
+    <div>
+      <h2>Celdas</h2>
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">Número</th>
-            <th scope="col">Código</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Acciones</th>
+            {/* Nueva columna para mostrar el ID de la celda */}
+            <th>ID</th>
+            <th>Estado</th>
+            <th>Celda</th>
+            <th>Placa</th>
+            <th>Fecha Ingreso</th>
+            <th>Hora Ingreso</th>
+            <th>Fecha Salida</th>
+            <th>Hora Salida</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {celdas.length === 0 ? (
-            <tr>
-              <td colSpan="4" className="text-center">No hay celdas disponibles</td>
-            </tr>
-          ) : (
-            celdas.map((celda) => (
-              <tr key={celda.id}>
-                <td>{celda.numero}</td>
-                <td>{celda.codigo}</td>
-                <td>
-                  {celda.estado ? (
-                    <span className="badge bg-success">Activo</span>
-                  ) : (
-                    <span className="badge bg-danger">Inactivo</span>
-                  )}
-                </td>
-                <td>
-                  <button
-                    className="btn btn-warning btn-sm"
-                    onClick={() => handleEditar(celda.id)}
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn btn-danger btn-sm ms-2"
-                    onClick={() => handleEliminar(celda.id)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
+          {celdas.map((celda) => (
+            <TrCelda key={celda.id} celda={celda} actualizarCelda={actualizarCelda} />
+          ))}
         </tbody>
       </table>
     </div>
   );
-}
+};
+
+export default Table;

@@ -1,9 +1,12 @@
-import AppRouter from "./routers/AppRouter";
-  
+import React from "react";
+import AppRouter from "../src/routers/AppRouter";  // Asegúrate de que AppRouter maneje las rutas
 
 function App() {
   return (
-   <AppRouter/>
+    <div className="App">
+      {/* Aquí renderizamos el componente AppRouter */}
+      <AppRouter />
+    </div>
   );
 }
 

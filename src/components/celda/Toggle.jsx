@@ -4,7 +4,7 @@ export default function Toggle({ cambiarEstado, estado }) {
   return (
     <div className="mb-3 form-check form-switch">
       <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-        Mostrar Celdas {estado ? 'Activas' : 'Inactivas'}
+        Mostrar Celdas {estado ? 'Disponibles' : 'Ocupadas'}
       </label>
       <input
         className="form-check-input"

@@ -1,22 +1,30 @@
 import React from "react";
-import { Routes } from "react-router-dom";
-import Navbar from "../ig/Navbar";
-import Footer from "../ig/Footer";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "../components/ui/NavBar";
+import Footer from "../components/ui/Footer";
 import Celdas from "../components/celda/Celda";
-import NotFound from "../ig/NotFound";  // Para rutas no encontradas
+import Pagos from "../components/pago/Pago";
+import Usuarios from "../components/usuario/Usuario";
+import Vehiculo from "../components/vehiculo/Vehiculo"; 
+import NotFound from "../components/ui/NotFound";
 
 export default function AppRouter() {
+  console.log("Rutas configuradas");
+
   return (
     <>
       <div className="container">
-        <Navbar /> {/* Barra de navegación */}
+        <Navbar />
         <Routes>
-          <Routes path="/" element={<Celdas />} /> {/* Ruta principal */}
-          <Routes path="/celdas" element={<Celdas />} /> {/* Ruta para ver las celdas */}
-          <Routes path="*" element={<NotFound />} /> {/* Ruta para cuando no se encuentra una ruta */}
+          <Route path="/" element={<Celdas />} />
+          <Route path="/celdas" element={<Celdas />} />
+          <Route path="/pagos" element={<Pagos />} />
+          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/vehiculos" element={<Vehiculo />} /> {/* Asegúrate de que esta ruta esté correcta */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      <Footer /> {/* Pie de página */}
+      <Footer />
     </>
   );
 }
